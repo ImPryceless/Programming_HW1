@@ -191,8 +191,7 @@ public class Student implements Runnable{
 	            {
 	                break;
 	            }
-		//break the infinite loop
-		break;
+
 	        }
 	    }
 }
@@ -232,7 +231,7 @@ public class TeachingAssistant implements Runnable {
 	        {
 	            try
 	            {
-	                System.out.println("No students left.  The TA is going to nap.");
+	                System.out.println("No students.  The TA will take a nap.");
 	                wakeup.release();
 	                System.out.println("The TA was awoke by a student.");
 	                
