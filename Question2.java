@@ -5,40 +5,39 @@ public class Connector
 {
     public static void main(String[] args) 
     {	
-	while (true) {
-		try {
+	try {
 
-			//Taking input from user and turning into integer
-			BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-			System.out.print("Enter the number of students that need to be helped: ");
-			int numberofStudents = Integer.parseInt(input.readLine());
+		//Taking input from user and turning into integer
+		BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
+		System.out.print("Enter the number of students that need to be helped: ");
+		int numberofStudents = Integer.parseInt(input.readLine());
 
-			// Create semaphores.
-			SignalSemaphore wakeup = new SignalSemaphore();
-			//semaphore for the number of chairs in hallway
-			Semaphore chairs = new Semaphore(3);
-			//semaphore for TA availability 
-			Semaphore available = new Semaphore(1);
+		// Create semaphores.
+		SignalSemaphore wakeup = new SignalSemaphore();
+		//semaphore for the number of chairs in hallway
+		Semaphore chairs = new Semaphore(3);
+		//semaphore for TA availability 
+		Semaphore available = new Semaphore(1);
 
-			//Used to generate programming time for students
-			Random studentWait = new Random();
+		//Used to generate programming time for students
+		Random studentWait = new Random();
 
 
-			// Creates a thread for every student
-			for (int i = 0; i < numberofStudents; i++) {
-				Thread student = new Thread(new Student(studentWait.nextInt(20), wakeup, chairs, available, i + 1));
-				student.start();
-			}
-
-			// Create and start Teaching Assistant Thread.
-			Thread ta = new Thread(new TeachingAssistant(wakeup, chairs, available));
-			ta.start();
-
-		} catch (Exception e) {
-			System.out.println("ERROR please enter a valid number: \n");
+		// Creates a thread for every student
+		for (int i = 0; i < numberofStudents; i++) {
+			Thread student = new Thread(new Student(studentWait.nextInt(20), wakeup, chairs, available, i + 1));
+			student.start();
 		}
 
-		}
+		// Create and start Teaching Assistant Thread.
+		Thread ta = new Thread(new TeachingAssistant(wakeup, chairs, available));
+		ta.start();
+
+	} catch (Exception e) {
+		System.out.println("ERROR please enter a valid number: \n");
+	}
+
+
 	}
 }
 
