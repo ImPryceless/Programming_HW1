@@ -1,5 +1,7 @@
 import java.util.concurrent.Semaphore;
 import java.util.Random;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Connector
 {
@@ -189,6 +191,8 @@ public class Student implements Runnable{
 	            {
 	                break;
 	            }
+		//break the infinite loop
+		break;
 	        }
 	    }
 }
