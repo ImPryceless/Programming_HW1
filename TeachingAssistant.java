@@ -1,3 +1,11 @@
+/*
+Group HW Team members:
+J.P. O'Malley
+Ikuseghan Pryce
+Ismael Garrido Rodriguez
+Shenna Marie-P Wyco
+Geidy Dorviny Molina
+*/
 
 /* TO RUN THIS PROGRAM FROM THE COMMAND LINE 
  * 
@@ -9,7 +17,6 @@
  * 
 
  */
-
 
 
 import java.util.concurrent.Semaphore;
