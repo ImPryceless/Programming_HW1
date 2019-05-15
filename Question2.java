@@ -38,21 +38,19 @@ public class Connector{//the driver class
     	}  
 }
 
-//new class
+//SignalSemaphore class
 public class SignalSemaphore {
 		
 	    //boolean variable to signal the TA
 	    private boolean signal = false;
 
 	    public SignalSemaphore(int i) {
-			// TODO Auto-generated constructor stub
 		}
 
 		public SignalSemaphore() {
-			// TODO Auto-generated constructor stub
 		}
 
-		// To send a signal if true
+            // To send a signal if true
 	    public synchronized void take() {
 	        this.signal = true;
 	        this.notify();
@@ -63,21 +61,21 @@ public class SignalSemaphore {
 	        while(!this.signal) wait();
 	        this.signal = false;
 	    }
-
-		public boolean tryAcquire() {//tryAcquire method
+		//tryAcquire method
+		public boolean tryAcquire() { 
 			return false;
 		}
-
-		public int availablePermits() {//availablePermits method
+		//availablePermits method
+		public int availablePermits() {
 			return 0;
 		}
-
-		public void acquire() {//acquire method
+		//acquire method
+		public void acquire() {
 			
 		}
 }
 
-//new class
+//Student class
 import java.util.concurrent.Semaphore;
 
 public class Student implements Runnable{
@@ -115,10 +113,14 @@ public class Student implements Runnable{
 			
 		}
 
+	
+	/**
+	 * The run method will infinitely loop between programming and asking for help until the thread is
+	 * interrupted.
+	 */
 	    @Override
-	    public void run(){//override the original run method
+	    public void run(){ //override the original run method
 	    	
-	        // Infinite loop until interrupted
 	        while(true)
 	        {
 	            try
@@ -189,7 +191,7 @@ public class Student implements Runnable{
 }
 
 
-//new class
+//TeachingAssistant class
 import java.util.concurrent.Semaphore;
 
 public class TeachingAssistant implements Runnable {
@@ -226,9 +228,10 @@ public class TeachingAssistant implements Runnable {
 	            try
 	            {
 	                System.out.println("No students left.  The TA is going to nap.");
-	                wakeup.release();
+	                wakeup.release(); //wake the TA thread.
 	                System.out.println("The TA was awoke by a student.");
 	                
+			//after waking the TA, sleep for 2 seconds.
 	                t.sleep(2000);
 	                
 	                // If there are other students waiting.
@@ -236,6 +239,7 @@ public class TeachingAssistant implements Runnable {
 	                {
 	                    do
 	                    {
+				//sleep thread for 2 seconds before freeing a space.
 	                        t.sleep(2000);
 	                        waitingChairs.release();
 	                    }
