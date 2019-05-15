@@ -8,34 +8,10 @@ import java.util.Random;
 public class Question2 {
 	public static void main(String[] args) {
 		
-		//Number of students
-		int numberofStudents = 5;
-		
-		// Create semaphores.
-		SignalSemaphore WakeUp = new SignalSemaphore();
-		//semaphore for the number of chairs in office
-		Semaphore seats = new Semaphore(3);
-		//semaphore for TA availability 
-		Semaphore TAavailable = new Semaphore(1);
-
-		//Generates waiting time for students
-		Random watingTime = new Random();
-
-		
-		// Creates a thread for every student
-		for (int i = 0; i < numberofStudents; i++) {
-			Thread student = new Thread(new Student(watingTime.nextInt(20), WakeUp, seats, TAavailable, i + 1));
-			student.start();
-		}
-
-		// Create and start Teaching Assistant Thread.
-		Thread TeacherAssisant = new Thread(new TeachingAssistant(WakeUp, seats, TAavailable));
-		TeacherAssisant.start();
-		
 
 		//Comment previous code until numberofStudents and Uncomment next block of code if you wish
 		//to specify number of students coming to the office. 
-		/*
+		
 		while(true) {
 			try {
 
@@ -71,9 +47,7 @@ public class Question2 {
 			}
 	
 			}	 
-			
-		*/
-		
+
 		
 		}
 		
