@@ -7,40 +7,35 @@ Shenna Marie-P Wyco
 Geidy Dorviny Molina
 */
 
-
-import java.util.concurrent.Semaphore;
 import java.util.Random;
 
-public class Connector
-{
-    public static void main(String[] args){
+public class Connector{//the driver class
+	
+    public static void main(String[] args){//main method
 
-        // Number of possible students
+        // Number of possible students b/c 1 student can be with the TA 3 students can be sitting in the chair waiting and the 5th student arrive and have to come back
         int numberOfPossibleStudents = 5;
         
-        // Instantiate a new Semaphores object
-        SignalSemaphore wakeup = new SignalSemaphore();
-        SignalSemaphore numOfChairs = new SignalSemaphore(3);
+        // Instantiate a new SignalSemaphores object
+        SignalSemaphore numOfChairs = new SignalSemaphore(3);//# of default chairs semaphore
         SignalSemaphore available = new SignalSemaphore(1);
+        SignalSemaphore wakeup = new SignalSemaphore();
         
         
-        // Used for randomly generating program time.
+        // Randomly generating program 
         Random studentWait = new Random();
         
         // For loop creating student threads and iterating thru them
         for (int i = 0; i < numberOfPossibleStudents; i++)
         {
             Thread student = new Thread(new Student(studentWait.nextInt(20), wakeup, numOfChairs, available, i+1));
-            student.start();
+            student.start();//telling the thread to start
         }
         
         // Creating the TA Thread object
         Thread ta = new Thread(new TeachingAssistant(wakeup, numOfChairs, available));
-        ta.start();
-       
-   
-    	}
-    
+        ta.start();//telling TA thread to start
+    	}  
 }
 
 //new class
@@ -69,18 +64,15 @@ public class SignalSemaphore {
 	        this.signal = false;
 	    }
 
-		public boolean tryAcquire() {
-			// TODO Auto-generated method stub
+		public boolean tryAcquire() {//tryAcquire method
 			return false;
 		}
 
-		public int availablePermits() {
-			// TODO Auto-generated method stub
+		public int availablePermits() {//availablePermits method
 			return 0;
 		}
 
-		public void acquire() {
-			// TODO Auto-generated method stub
+		public void acquire() {//acquire method
 			
 		}
 }
@@ -123,16 +115,15 @@ public class Student implements Runnable{
 			
 		}
 
-		
 	    @Override
-	    public void run()
-	    {
-	        // Infinite loop.
+	    public void run(){//override the original run method
+	    	
+	        // Infinite loop until interrupted
 	        while(true)
 	        {
 	            try
 	            {
-	               // Program first.
+	               // First S.O.P to have student program first
 	               System.out.println("Student " + numOfStudent + " has started programming for " + timeToProgram + " seconds.");
 	               Thread.sleep(timeToProgram * 1000);
 	                
@@ -147,7 +138,7 @@ public class Student implements Runnable{
 	                       wakeup.take();
 	                       System.out.println("Student " + numOfStudent + " has woke up the TA.");
 	                       System.out.println("Student " + numOfStudent + " has started working with the TA.");
-	                       Thread.sleep(5000);
+	                       Thread.sleep(2000);
 	                       System.out.println("Student " + numOfStudent + " has stopped working with the TA.");
 	                   }
 	                   catch (InterruptedException e)
@@ -173,7 +164,7 @@ public class Student implements Runnable{
 	                                   + "He is #" + ((3 - waitingChairs.availablePermits())) + " in line.");
 	                           available.acquire();
 	                           System.out.println("Student " + numOfStudent + " has started working with the TA.");
-	                           Thread.sleep(5000);
+	                           Thread.sleep(2000);
 	                           System.out.println("Student " + numOfStudent + " has stopped working with the TA.");
 	                           available.release();
 	                       }
@@ -194,7 +185,9 @@ public class Student implements Runnable{
 	            }
 	        }
 	    }
+
 }
+
 
 //new class
 import java.util.concurrent.Semaphore;
@@ -210,14 +203,14 @@ public class TeachingAssistant implements Runnable {
 	    // Semaphore to determine if TA is available
 	    private SignalSemaphore available;
 
-	    // A reference to the current thread.
+	    // A reference to the current thread
 	    private Thread t;
 	    //overloaded constructor
 	    public TeachingAssistant(SignalSemaphore wake, SignalSemaphore chairs, SignalSemaphore a)
 	    {
 	        t = Thread.currentThread();
-	        wakeup = wake;
 	        waitingChairs = chairs;
+	        wakeup = wake;
 	        available = a;
 	    }
 	    //overloaded constructor
@@ -236,14 +229,14 @@ public class TeachingAssistant implements Runnable {
 	                wakeup.release();
 	                System.out.println("The TA was awoke by a student.");
 	                
-	                t.sleep(5000);
+	                t.sleep(2000);
 	                
 	                // If there are other students waiting.
 	                if (waitingChairs.availablePermits() != 3)
 	                {
 	                    do
 	                    {
-	                        t.sleep(5000);
+	                        t.sleep(2000);
 	                        waitingChairs.release();
 	                    }
 	                    while (waitingChairs.availablePermits() != 3);                   
@@ -255,7 +248,6 @@ public class TeachingAssistant implements Runnable {
 	            }
 	        }
 	    }
-	
 }
 
 
