@@ -1,7 +1,13 @@
-// J.P. O'Malley
+/*
+Group HW Team members:
+J.P. O'Malley
+Ikuseghan Pryce
+Ismael Garrido Rodriguez
+Shenna Marie-P Wyco
+Geidy Dorviny Molina
+*/
 
 import java.util.*;
-import java.lang.*;
 import java.util.stream.*;
 
 public class Question1 {
