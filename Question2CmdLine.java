@@ -9,7 +9,7 @@ Geidy Dorviny Molina
 
 /* TO RUN THIS PROGRAM FROM THE COMMAND LINE 
  * 
- * 1. Navigate to the directory where the file is located
+ * 1. On the command line, CD to the directory where the file is located
  * 2. Run the command "javac TeachingAssistant.java" to compile
  * 		a.This will create a class file called TeachingAssistant.class
  * 
