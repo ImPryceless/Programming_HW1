@@ -1,58 +1,66 @@
 
+/* TO RUN THIS PROGRAM FROM THE COMMAND LINE 
+ * 
+ * 1. Navigate to the directory where the file is located
+ * 2. Run the command "javac TeachingAssistant.java" to compile
+ * 		a.This will create a class file called TeachingAssistant.class
+ * 
+ * 3. run the command "java <name-of-class> <argument-passing>". For example "java TeachingAssistant 5"
+ * 
+
+ */
+
+
+
 import java.util.concurrent.Semaphore;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.Random;
 
 
-public class Question2 {
-	public static void main(String[] args) {
-		
-
-		//Comment previous code until numberofStudents and Uncomment next block of code if you wish
-		//to specify number of students coming to the office. 
-		
-		while(true) {
-			try {
-
-				//Taking input from user and turning into integer
-				BufferedReader input = new BufferedReader(new InputStreamReader(System.in));
-				System.out.print("Enter the number of students that need to be helped: ");
-				int numberofStudents = Integer.parseInt(input.readLine());
-				
-				// Create semaphores.
-				SignalSemaphore WakeUp = new SignalSemaphore();
-				//semaphore for the number of chairs in office
-				Semaphore seats = new Semaphore(3);
-				//semaphore for TA availability 
-				Semaphore TAavailable = new Semaphore(1);
-
-				//Generates waiting time for students
-				Random watingTime = new Random();
-
-				
-				// Creates a thread for every student
-				for (int i = 0; i < numberofStudents; i++) {
-					Thread student = new Thread(new Student(watingTime.nextInt(20), WakeUp, seats, TAavailable, i + 1));
-					student.start();
-				}
-
-				// Create and start Teaching Assistant Thread.
-				Thread TeacherAssisant = new Thread(new TeachingAssistant(WakeUp, seats, TAavailable));
-				TeacherAssisant.start();
-						
-			//In case user enters a letter or invalid number
-			} catch (Exception e) {
-				System.out.println("ERROR please enter a valid number \n");
-			}
+public class TeachingAssistant {
 	
-			}	 
+	
+   public static void main(String[] args) {
+	   
+	      try {
+	         if (args.length >= 1)
+	            new TeachingAssistant(Integer.parseInt(args[0]));
+	         else {
+	            System.out.println("Please enter number of students to assist as argument. Ex java TeachingAssistant 3");
+	            System.exit(0);
+	         }
+	      } catch (Exception e) {
+	         System.out.println("Error parsing number of students.");
+	            System.exit(0);
+	      }
 
+	      
+	   }
+   
+   public TeachingAssistant(int numberofStudents) {
+	   
+		// Create semaphores.
+		SignalSemaphore WakeUp = new SignalSemaphore();
+		//semaphore for the number of chairs in office
+		Semaphore seats = new Semaphore(3);
+		//semaphore for TA availability 
+		Semaphore TAavailable = new Semaphore(1);
 		
+		
+		//Generates waiting time for students
+		Random watingTime = new Random();
+
+		// Creates a thread for every student
+		for (int i = 0; i < numberofStudents; i++) {
+			Thread student = new Thread(new Student(watingTime.nextInt(20), WakeUp, seats, TAavailable, i + 1));
+			student.start();
 		}
-		
 
-	}
+		// Create and start Teaching Assistant Thread.
+		Thread TeacherAssisant = new Thread(new TeacherAssistant(WakeUp, seats, TAavailable));
+		TeacherAssisant.start();
+		
+	   }
+	
 
 
 //This signal semaphore is what it's used to wake up the TA
@@ -175,7 +183,7 @@ class Student implements Runnable {
 }
 
 
-class TeachingAssistant implements Runnable {
+class TeacherAssistant implements Runnable {
 	// Semaphore used to WakeUp TA.
 	private SignalSemaphore WakeUp;
 
@@ -190,7 +198,7 @@ class TeachingAssistant implements Runnable {
 
 	/* ----- Constructor ------- */
 	
-	public TeachingAssistant(SignalSemaphore w, Semaphore s, Semaphore a) {
+	public TeacherAssistant (SignalSemaphore w, Semaphore s, Semaphore a) {
 		temp = Thread.currentThread();
 		WakeUp = w;
 		seats = s;
@@ -219,4 +227,6 @@ class TeachingAssistant implements Runnable {
 			}
 		}
 	}
+ }
+
 }
